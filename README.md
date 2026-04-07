@@ -4,7 +4,7 @@ This project analyzes **hospital length of stay (LOS) among patients hospitalize
 
 Heart failure hospitalizations are considered **Ambulatory Care Sensitive Conditions (ACSC)**, meaning that effective primary care and disease management may help prevent complications and reduce hospitalizations.
 
-The goal of this project is to demonstrate a **principled workflow for statistical model selection in health services research**, integrating causal reasoning, data structure, and empirical model diagnostics.
+The objective of this project is to illustrate a **principled workflow for statistical model selection in health services research**, integrating causal reasoning, data structure, and empirical model diagnostics.
 
 ---
 
@@ -12,7 +12,27 @@ The goal of this project is to demonstrate a **principled workflow for statistic
 
 Data come from the **SPARCS (Statewide Planning and Research Cooperative System)** database from New York State.
 
-The dataset includes approximately **28,000 hospital admissions across 178 hospitals**.
+The original dataset contains **1,048,575 hospital admissions and 30 variables**.
+
+---
+
+# Data Preparation
+
+For this study, the dataset was restricted to **hospitalizations with a primary diagnosis of heart failure**, resulting in an analytical dataset with **27,925 observations across 178 hospitals**, while retaining the same 30 variables.
+
+Key data preparation steps included:
+
+* Identifying hospitalizations with **primary diagnosis of heart failure**
+* Creating categorical variables for **age group, payer type, and admission type**
+* Defining **procedure groups** based on clinical categories
+* Using **APR severity** as a measure of clinical severity
+* Preparing variables for mixed-effects modeling
+
+All data preparation steps are documented in the script:
+
+```
+scripts/01_data_cleaning.R
+```
 
 ---
 
@@ -61,19 +81,25 @@ Therefore, the following models were evaluated:
 * Gamma mixed model
 * Log-normal model
 
-### Distribution of LOS
+---
 
-The distribution of LOS shows clear right skewness.
+# Distribution of Length of Stay
+
+The distribution of LOS shows strong right skewness.
 
 ![LOS Distribution](figures/histogram_los.png)
 
-A Cullen–Frey plot was also used to explore plausible distributions.
+---
 
-![Cullen Frey Plot](figures/Cullen_Frey_los.png)
+# Candidate Distributions
+
+A Cullen–Frey plot was used to explore plausible distributions for LOS.
+
+![Cullen-Frey Plot](figures/Cullen_Frey_los.png)
 
 ---
 
-## 4. Model Comparison and Diagnostics
+# Model Comparison and Diagnostics
 
 Candidate models were compared using:
 
@@ -128,17 +154,17 @@ Procedure type was also associated with LOS.
 
 ---
 
-### Interaction Between Severity and Procedures
+# Interaction Between Severity and Procedures
 
-The analysis revealed an important **interaction between clinical severity and procedure type**.
+The final model revealed an **interaction between clinical severity and procedure type**.
 
 Among patients with **extreme clinical severity**, those undergoing diagnostic procedures stayed on average **5.79 additional days** in the hospital.
 
-![Interaction Between Severity and Procedures](figures/interaction_procedure.png)
+![Interaction Plot](figures/interaction_procedure.png)
 
 ---
 
-### Hospital-Level Variation
+# Hospital-Level Variation
 
 Approximately **10% of the variation in LOS** was attributable to differences between hospitals.
 
@@ -169,9 +195,8 @@ README.md
 
 # Next Steps
 
-Future updates to this repository will include:
+Future updates will include:
 
 * DAG visualization
 * detailed model diagnostics
-* complete reproducible analysis pipeline
-
+* a fully reproducible analysis pipeline
