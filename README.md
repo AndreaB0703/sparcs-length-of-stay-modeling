@@ -86,7 +86,7 @@ Exploratory analysis confirmed the skewed distribution of LOS.
 
 To identify plausible statistical distributions, a **Cullen–Frey plot** was used.
 
-![Cullen-Frey Plot](figure/Cullen_Frey_los.png)
+![Cullen-Frey Plot](output/Cullen_Frey_los.png)
 
 Based on these diagnostics, two candidate models were evaluated:
 
@@ -163,7 +163,7 @@ The final model revealed an **interaction between clinical severity and procedur
 
 Among patients with **extreme clinical severity**, those undergoing **diagnostic procedures** had an estimated **5.79 additional days of hospital stay** compared with patients without procedures.
 
-![Interaction Between Severity and Procedures](figure/interaction_procedure.png)
+![Interaction Between Severity and Procedures](output/interaction_procedure.png)
 
 ---
 
