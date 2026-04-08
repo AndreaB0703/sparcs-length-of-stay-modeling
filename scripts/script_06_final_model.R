@@ -34,10 +34,11 @@ sjPlot::tab_model(
   model_gamma_interaction,
   file = "output/model_table.html")
 
-#comparison interaction between apr_severity and procedures (proc_group)
+#comparison interaction between apr_severity and procedures (proc_group) - emmeans
 emm_interaction <- emmeans(model_gamma_interaction,
                            ~ apr_severity * proc_group,
                            type = "response")
+emm_interaction
 
 #graph_interaction severity and procedure
 emm_interaction <- as.data.frame(emm_interaction)
