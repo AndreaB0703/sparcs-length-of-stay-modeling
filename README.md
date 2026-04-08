@@ -185,6 +185,6 @@ README.md
 # Author
 
 **Andrea B.**
-PhD in Epidemiology
-Master of Public Health (MPH)
+PhD in Epidemiology, 
+Master of Public Health (MPH), and 
 Bachelor of Science in Nursing (BSN)
