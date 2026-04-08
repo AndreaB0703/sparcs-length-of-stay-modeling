@@ -1,4 +1,3 @@
-#load packs
 library(tidyverse)
 library(here)
 library(janitor)
@@ -241,6 +240,24 @@ sparcs_hf$ed_admission <- factor(sparcs_hf$ed_admission)
 #count ed_admission N=2076 Y=25863 table(sparcs_hf$ed_admission)
 table(sparcs_hf$ed_admission) 
 
+#relevel <fct> categories of interest sex, race_group, payer_group, apr_severity, proc_group and ed_admision
+sparcs_hf <- sparcs_hf |>
+  mutate(
+    sex = factor(sex,
+                 levels = c("M","F")),
+    race_group = factor(race_group,
+                        levels = c("White","Black/African American","Other Race")),
+    payer_group = factor(payer_group,
+                         levels = c("Private","Medicare","Medicaid","Government","Self-Pay","Other")),
+    apr_severity = factor(apr_severity,
+                          levels = c("Minor","Moderate","Major","Extreme")),
+    proc_group = factor(proc_group,
+                        levels = c("none","minor_or_diagnostic",
+                                   "cardiac_procedure","organ_or_respiratory_support")),
+    ed_admission = factor(ed_admission,
+                          levels = c("Non-emergency","Emergency")))
+
+
 #change class variables from <int> to <num> (here only numeric) = los, costs and charges
 sparcs_hf <- sparcs_hf |>
   dplyr::mutate(
@@ -265,7 +282,6 @@ sum(is.na(sparcs_hf$costs))
 #check if na in charges =0
 sum(is.na(sparcs_hf$charges))
 
-
 #summary los
 summary(sparcs_hf$los)
 #summary costs
@@ -276,30 +292,14 @@ summary(sparcs_hf$charges)
 #remove empty levels (<fct> variables) double check
 sparcs_hf <- droplevels(sparcs_hf)
 
-#----------------------------------------------------------
-# QUICK CHECK BEFORE ANALYSIS
-#----------------------------------------------------------
-#check number of hospitals = 178 (random intercept) ok
+
+# check type of admission after final cleaning 
+#emergency = 25852 and non-emergency = 2073 ok 
+table(sparcs_hf$ed_admission)
+
+#check number of hospitals (random intercept) 178 ok 
 n_distinct(sparcs_hf$hospital_id)
 
-#check number of admissions per hospital
-sparcs_hf |>
-  count(hospital_id, sort = TRUE)
-
-#summary hospital n of admissions min 1 max 512 median 128 mean 156
-sparcs_hf |>
-  count(hospital_id) |>
-  summary()
-
-##death changes los analysis
-#check mean los X discharge_group
-sparcs_hf |>
-  dplyr::group_by(discharge_group) |>
-  dplyr::summarise(mean_los = mean(los, na.rm = TRUE))
-
-# check dataset sparcs_hf  and type of admission after final cleaning 
-#emergency = 25854 and non-emergency = 2073 
-table(sparcs_hf$ed_admission)
 
 #check again NO missing values in numeric variables of interest = los, charges, costs
 sum(is.na(sparcs_hf$los))
@@ -311,7 +311,7 @@ sum(is.na(sparcs_hf$costs))
 colSums(is.na(sparcs_hf))
 
 #check final dataset
-nrow(sparcs_hf) #27927 rows
+nrow(sparcs_hf) #27925 rows
 
 
 #save as RDS 
